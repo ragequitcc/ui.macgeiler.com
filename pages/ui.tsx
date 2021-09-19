@@ -1,45 +1,48 @@
-import type { NextPage } from "next";
-import styles from "../styles/Config.module.scss";
-import { Button, Form, FormGroup, Input, Label } from "reactstrap";
-import { useEffect, useState } from "react";
+import type { NextPage } from 'next';
+import styles from '../styles/Config.module.scss';
+import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
+import { useEffect, useState } from 'react';
 
 const Ui: NextPage = (props) => {
-  const [currentLabel, setLabel] = useState("");
+  const [currentLabel, setLabel] = useState('');
+  const [labelList, setLabelList] = useState([]);
 
-  const getLabel = async (label: string) => {
-    await fetch(`/api/labels?label=${label}`, {
-      method: "GET",
+  const newLabel = async (label: string) => {
+    await fetch(`/api/labels/${label.slice(0, label.length - 4)}`, {
+      method: 'GET',
     })
-      .then((data) => {
+      .then(data => {
+        console.log(data);
         return data.json();
       })
-      .then((data) => {
-        //console.log(data.data.split(/:/g));
-        setLabel(data.data.split(/:/g)[0]);
+      .then(data => {
+        console.log(data);
+        setLabel(data);
       })
       .catch((error) => {
-        // fug.
+        console.log(error);
       });
-  };
+  }
 
   useEffect(() => {
-    const fetchLabels = async () => {
-      await fetch("/api/labels?label=all_time_top_donator", {
-        method: "GET",
+    const initFetch = async () => {
+      await fetch('/api/labels/all', {
+        method: 'GET',
       })
-        .then((data) => {
+        .then(data => {
           return data.json();
         })
-        .then((data) => {
-          // format bcuz mac want's only the name not the amount. he noble.
-          setLabel(data.data.split(/:/g)[0]);
+        .then(data => {
+          newLabel(data[0]);
+          setLabelList(data);
         })
         .catch((error) => {
           // fug.
+          alert('shit.')
         });
     };
 
-    fetchLabels();
+    initFetch();
   }, []);
 
   return <div className={styles.container}>{currentLabel}</div>;
