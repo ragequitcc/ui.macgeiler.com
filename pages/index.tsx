@@ -11,15 +11,11 @@ export const getServerSideProps = async () => {
 };
 
 type Config = {
-  config: [{ labelPath: String, streamlabsApiKey: String }];
+  config: [{ labelPath: String; streamlabsApiKey: String }];
 };
 
 const Home: NextPage<Config> = ({ config }) => {
-  return (
-    <div className={styles.container}>
-      soon.
-    </div>
-  );
+  return <div className={styles.container}>soon.</div>;
 };
 
 export default Home;

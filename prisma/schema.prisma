@@ -11,7 +11,12 @@ generator client {
 }
 
 model Config {
-  id                Int @id @default(autoincrement())
-  labelPath        String
-  streamlabsApiKey  String
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  value String
+}
+
+model Labels {
+  id   Int    @id @default(autoincrement())
+  name String
 }
